@@ -13,6 +13,7 @@ import random
 from datasets import make_rt_gender, make_rt_gender_op_posts
 from model import *
 from torchtext.vocab import GloVe
+from tqdm import tqdm
 
 def make_parser():
   parser = argparse.ArgumentParser(description='PyTorch RNN Classifier w/ attention')
@@ -112,7 +113,7 @@ def update_stats(accuracy, confusion_matrix, logits, y):
   equal = torch.eq(max_ind, y)
   correct = int(torch.sum(equal))
 
-  for j, i in zip(max_ind, y):
+  for j, i in tqdm(zip(max_ind, y)):
     confusion_matrix[int(i),int(j)]+=1
 
   return accuracy + correct, confusion_matrix
@@ -123,7 +124,7 @@ def update_stats_topics(accuracy, confusion_matrix, logits, y):
   equal = torch.eq(max_ind, max_ind_y)
   correct = int(torch.sum(equal))
 
-  for j, i in zip(max_ind, max_ind_y):
+  for j, i in tqdm(zip(max_ind, max_ind_y)):
     confusion_matrix[int(i),int(j)]+=1
 
   return accuracy + correct, confusion_matrix
@@ -230,7 +231,7 @@ def evaluate(model, data, optimizer, criterion, args, datatype='Valid', writetop
   total_loss = 0
   total_topic_loss = 0
   with torch.no_grad():
-    for batch_num, batch in enumerate(data):
+    for batch_num, batch in tqdm(enumerate(data)):
       # print (len(batch.text))
       x, lens = batch.text
       y = batch.label
@@ -411,7 +412,7 @@ def main():
     try:
       best_valid_loss = None
       best_model = None
-      for epoch in range(1, args.epochs + 1):
+      for epoch in tqdm(range(1, args.epochs + 1)):
         train(model, train_iter, optimizer, criterion, args, epoch)
         loss = evaluate(model, val_iter, optimizer, criterion, args)
 
