@@ -9,7 +9,7 @@
 ################################## TO FILL IN ############################################################
 # source activate your-env-here
 
-TOP_DIR= /content/gdrive/MyDrive/Literary-bias/unsupervised_gender_bias/src/unsupervised_gender_bias_models # the path to unzipped tarball of saved models
+TOP_DIR=/content/gdrive/MyDrive/Literary-bias/unsupervised_gender_bias/src/unsupervised_gender_bias_models # the path to unzipped tarball of saved models
 
 # SUFFIX="facebook_wiki"  # Flip comment to change which data set to run
 SUFFIX="facebook_congress"
