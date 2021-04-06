@@ -138,7 +138,7 @@ def train(model, data, optimizer, criterion, args, epoch):
   total_loss = 0
   total_topic_loss = 0
   num_batches = len(data)
-  for batch_num, batch in enumerate(data):
+  for batch_num, batch in tqdm(enumerate(data)):
 
     if args.alpha_sched2:
       p = (batch_num + epoch * num_batches)/(args.epochs * num_batches)
@@ -264,9 +264,9 @@ def evaluate(model, data, optimizer, criterion, args, datatype='Valid', writetop
         max_val, max_ind = torch.max(soft_logits, 1)
         first_val = soft_logits[:, 0]
         energy = energy.squeeze(1).cpu().data.numpy()
-        for sentence, length, attns, ll, mi, index, max_val, first_val in zip(x.permute(1,0).cpu().data.numpy(), lens.cpu().data.numpy(), energy, y.cpu().data.numpy(), max_ind.cpu().data.numpy(), indices, max_val.cpu().data.numpy(), first_val.cpu().data.numpy()):
+        for sentence, length, attns, ll, mi, index, max_val, first_val in tqdm(zip(x.permute(1,0).cpu().data.numpy(), lens.cpu().data.numpy(), energy, y.cpu().data.numpy(), max_ind.cpu().data.numpy(), indices, max_val.cpu().data.numpy(), first_val.cpu().data.numpy())):
           s = ""
-          for wordid, attn in zip(sentence[:length], attns[:length]):
+          for wordid, attn in tqdm(zip(sentence[:length], attns[:length])):
             s += str(itos[wordid])+":"+str(attn)+" "
           gold = str(litos[ll])
           pred = str(litos[mi])
@@ -280,9 +280,9 @@ def evaluate(model, data, optimizer, criterion, args, datatype='Valid', writetop
         m = torch.nn.Softmax()
         soft_logits = m(logits)
         max_val, max_ind = torch.max(soft_logits, 1)
-        for sentence, length, ll, mi, index, max_val in zip(x.permute(1,0).cpu().data.numpy(), lens.cpu().data.numpy(), y.cpu().data.numpy(), max_ind.cpu().data.numpy(), indices, max_val.cpu().data.numpy()):
+        for sentence, length, ll, mi, index, max_val in tqdm(zip(x.permute(1,0).cpu().data.numpy(), lens.cpu().data.numpy(), y.cpu().data.numpy(), max_ind.cpu().data.numpy(), indices, max_val.cpu().data.numpy())):
           s = ""
-          for wordid in sentence[:length]:
+          for wordid in tqdm(sentence[:length]):
             s += str(itos[wordid])+" "
           gold = str(litos[ll])
           pred = str(litos[mi])
@@ -395,7 +395,7 @@ def main():
   topic_criterion = nn.CrossEntropyLoss()
   optimizer = torch.optim.Adam(model.parameters(), args.lr, amsgrad=True)
 
-  for p in model.parameters():
+  for p in tqdm(model.parameters()):
     if not p.requires_grad:
       print ("OMG", p)
       p.requires_grad = True
