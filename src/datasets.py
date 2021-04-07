@@ -17,6 +17,7 @@ def make_rt_gender(batch_size, base_path, train_file, valid_file, test_file, dev
     train = data.TabularDataset(path=os.path.join(base_path,train_file), format="tsv", fields=[('index', INDEX), ('text',TEXT), ('label', LABEL), ('topics', TOPICS)])
   else:
     train = data.TabularDataset(path=os.path.join(base_path,train_file), format="tsv", fields=[('index', INDEX), ('text',TEXT), ('label', LABEL)])
+    train.examples = train.examples[0:10]
 
   TEXT.build_vocab(train, vectors=vectors, max_size=30000)
   LABEL.build_vocab(train)
@@ -25,7 +26,7 @@ def make_rt_gender(batch_size, base_path, train_file, valid_file, test_file, dev
   val = data.TabularDataset(path=os.path.join(base_path,valid_file), format="tsv", fields=[('index', INDEX), ('text',TEXT), ('label', LABEL)])
   test = data.TabularDataset(path=os.path.join(base_path,test_file), format="tsv", fields=[('index', INDEX), ('text',TEXT), ('label', LABEL)])
 
-  train_iter, val_iter, test_iter = data.BucketIterator.splits((test, val, test), batch_sizes=(batch_size, 256, 256), device=device, repeat=False, sort_key=lambda x: len(x.text))
+  train_iter, val_iter, test_iter = data.BucketIterator.splits((train, val, test), batch_sizes=(batch_size, 256, 256), device=device, repeat=False, sort_key=lambda x: len(x.text))
 
   if topics:
     return (train_iter, val_iter, test_iter), TEXT, LABEL, TOPICS, INDEX
