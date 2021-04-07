@@ -10,6 +10,7 @@ import copy
 import codecs
 import random
 import pdb
+pdb.set_trace()
 
 from datasets import make_rt_gender, make_rt_gender_op_posts
 from model import *
