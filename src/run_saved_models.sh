@@ -28,7 +28,7 @@ NO_SUFFIX="notopics"
 
 ##################################### Run Models (write test predictions to files) ######################################################
 # Matched, no demotion
-python train.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${MATCHED_SUFFIX}.${NO_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/matched_notopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_matched_notopics.model --gpu 0 --batch_size 32  --write_attention --epochs 5 --lr 0.0001 --load
+echo python train.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${MATCHED_SUFFIX}.${NO_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/matched_notopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_matched_notopics.model --gpu 0 --batch_size 32  --write_attention --epochs 5 --lr 0.0001 --load
 #python analysis_scripts/write_metrics.py --attention_file ${DATA_DIR}/matched_notopics_${SUBS_SUFFIX}/test.${SUBS_SUFFIX}.${SUFFIX}.rt_gender_${SUFFIX}_matched_notopics.model_attention.txt
 
 # No matching, no demotion
